@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:ppmadm/ppmadm@bl860p.is.sonicduo.com:1521:ppmtest"/>
+    <property name="username" value="ppmadm"/>
+    <property name="password" value="ppmadm"/>
+</bean>
+
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="SDEXCH.sonicduo.com" />
+	<property name="port" value="25" />
+	<property name="javaMailProperties">
+		<props>
+           	<prop key="mail.debug">false</prop>
+		<prop key="mail.mime.charset">UTF-8</prop>
+       	</props>
+	</property>
+</bean>
+ 
+<bean id="registrationService" class="messenger.SimpleMessenger">
+	<property name="mailSender" ref="mailSender"/>
+	<property name="velocityEngine" ref="velocityEngine"/>
+</bean>
+
+<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean"> 
+	<property name="velocityProperties"> 
+	   <props>
+		<prop key="resource.loader">file</prop>
+		<prop key="file.resource.loader.class">
+		        org.apache.velocity.runtime.resource.loader.FileResourceLoader
+	       </prop>
+	       <prop key="file.resource.loader.path">/PPM-pump/ppmmailsender/template</prop>
+	       <prop key="file.resource.loader.cache">false</prop>
+		<prop key="output.encoding">UTF-8</prop>
+		<prop key="input.encoding">UTF-8</prop>
+		<prop key="default.contentType">UTF-8</prop>
+	   </props>
+	</property>
+</bean>
+
+</beans>

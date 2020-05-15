@@ -1,0 +1,5 @@
+
+start_mailsender.sh <request_id> <type of mail>
+example:
+sh start_mailsender.sh 1 2
+
